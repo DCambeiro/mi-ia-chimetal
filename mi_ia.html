@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mi IA - Chimetal</title>
+</head>
+<body>
+  <h1>Chimetal IA</h1>
+  <textarea id="mensaje" rows="4" cols="50" placeholder="Escribe aquí..."></textarea><br>
+  <button onclick="enviar()">Enviar</button>
+  <p><strong>Respuesta:</strong></p>
+  <div id="respuesta"></div>
+
+  <script>
+    async function enviar() {
+      const input = document.getElementById("mensaje").value;
+      const respuestaDiv = document.getElementById("respuesta");
+
+      const resultado = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer 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"
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [
+            { role: "system", content: "Eres Chimetal, una IA simpática que responde en español." },
+            { role: "user", content: input }
+          ]
+        })
+      });
+
+      const datos = await resultado.json();
+      const respuestaIA = datos.choices[0].message.content;
+      respuestaDiv.innerText = respuestaIA;
+    }
+  </script>
+</body>
+</html>
